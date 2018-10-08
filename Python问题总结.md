@@ -7,6 +7,6 @@ python数据结构写入.json文件中
 * json.dumps()用于将python数据结构转换为json编码的字符串
 * json.loads()用于将json编码的字符串转换为python数据结构
 ## 区别：
-* 多一个s处理字符串(`S`tring),少一个s为处理文件
+* 多一个s处理字符串(String),少一个s为处理文件
 * [详见链接](https://www.cnblogs.com/everfight/p/json_file.html)
 -------------
