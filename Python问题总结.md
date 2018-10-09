@@ -10,3 +10,6 @@ python数据结构写入.json文件中
 * 多一个s处理字符串(String),少一个s为处理文件
 * [详见链接](https://www.cnblogs.com/everfight/p/json_file.html)
 -------------
+# 如何简单地理解Python中的if __name__ == '__main__'
+* [详细链接](https://blog.csdn.net/yjk13703623757/article/details/77918633/)
+-------------
