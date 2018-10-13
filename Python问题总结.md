@@ -15,25 +15,8 @@ python数据结构写入.json文件中
 * [详细链接](https://blog.csdn.net/yjk13703623757/article/details/77918633/)
 -------------
 ## numpy库中的ndarray
-# 例子
-* arr = np.array([[1,2,3],[2,3,4],[4,5,6]])
-* arr[:]
-* array([[1, 2, 3],
-        [2, 3, 4],
-        [4, 5, 6]])
-* arr[:2]
-array([[1, 2, 3],
-       [2, 3, 4]])
->>> arr[1:2]
-array([[2, 3, 4]])
->>> arr[:2,:2]
-array([[1, 2],
-       [2, 3]])
->>> arr[:,0:2]
-array([[1, 2],
-       [2, 3],
-       [4, 5]])
-  ···
+### 例子
+![图片有误](https://raw.githubusercontent.com/Ethan-1997/IT-/master/images/adarray.png)
 -------------
 # Python数据挖掘
 ## 亲和性分析
@@ -64,7 +47,7 @@ import numpy as np # 导入第三方库numpy，别名为np
 dataset_filename = "affinity_dataset.txt" 
 X = np.loadtxt(dataset_filename) # 导入当前路径下的数据集affinity_dataset.txt,X为ndarray类型
 # shape：当X是一维时，表示元素个数   当X是二维时，表示二维数组行列数
-# n_samples为行，此处为数据个数，n_features为列，此处为特征值个数
+# n_samples为行，此处为每个顾客买的商品情况，n_features为列，此处为商品类别
 n_samples, n_features = X.shape
 print("This dataset has {0} samples and {1} features".format(n_samples, n_features))
 
@@ -75,24 +58,21 @@ print("This dataset has {0} samples and {1} features".format(n_samples, n_featur
 print(X[:5])
 
 
-# In[4]:
+# In[3]:
 
-
-# The names of the features, for your reference.
+# 商品设为bread milk cheese appies bananas
 features = ["bread", "milk", "cheese", "apples", "bananas"]
 
 
-# In our first example, we will compute the Support and Confidence of the rule "If a person buys Apples, they also buy Bananas".
-
+# 第一个例子中计算如果顾客买了苹果，还买香蕉的支持度和置信度
 # In[4]:
 
-
-# First, how many rows contain our premise: that a person is buying apples
+# 首先计算多少行包含了买苹果这个前提：
 num_apple_purchases = 0
 for sample in X:
-    if sample[3] == 1:  # This person bought Apples
+    if sample[3] == 1:  # 如果这个顾客买了苹果
         num_apple_purchases += 1
-print("{0} people bought Apples".format(num_apple_purchases))
+print("{0} people bought Apples".format(num_apple_purchases)) # 已经计算出多少顾客买了商品
 
 
 # In[5]:
@@ -116,17 +96,15 @@ print("{0} cases of the rule being invalid were discovered".format(rule_invalid)
 
 # In[6]:
 
-
 # Now we have all the information needed to compute Support and Confidence
-support = rule_valid  # The Support is the number of times the rule is discovered.
+support = rule_valid 
+# The Support is the number of times the rule is discovered.
 confidence = rule_valid / num_apple_purchases
-print("The support is {0} and the confidence is {1:.3f}.".format(support, confidence))
 # Confidence can be thought of as a percentage using the following:
 print("As a percentage, that is {0:.1f}%.".format(100 * confidence))
 
 
-# In[2]:
-
+# In[7]:
 
 from collections import defaultdict
 # Now compute for all possible rules
@@ -148,27 +126,25 @@ for sample in X:
             else:
                 # This person bought the premise, but not the conclusion
                 invalid_rules[(premise, conclusion)] += 1
-support = valid_rules
+support = valid_rules # support此时和valid_rules指向同一个内存空间
 confidence = defaultdict(float)
-for premise, conclusion in valid_rules.keys():
+for premise, conclusion in valid_rules.keys(): # valid_rules。keys()为所有键值
     confidence[(premise, conclusion)] = valid_rules[(premise, conclusion)] / num_occurences[premise]
 
 
-# In[5]:
+# In[8]:
 
-
-for premise, conclusion in confidence:
-    premise_name = features[premise]
+for premise, conclusion in confidence: # confidenc时键为元组，值为float 所以键有两个元素值 premise与conclusion分别对应到了这两个值
+    premise_name = features[premise] 
     conclusion_name = features[conclusion]
     print("Rule: If a person buys {0} they will also buy {1}".format(premise_name, conclusion_name))
-    print(" - Confidence: {0:.3f}".format(confidence[(premise, conclusion)]))
+    print(" - Confidence: {0:.3f}".format(confidence[(premise, conclusion)])) # .3f为保留小数后后三位
     print(" - Support: {0}".format(support[(premise, conclusion)]))
     print("")
 
 
 # In[9]:
-
-
+ # 将Int[8]的内容写成一个方法
 def print_rule(premise, conclusion, support, confidence, features):
     premise_name = features[premise]
     conclusion_name = features[conclusion]
@@ -179,8 +155,7 @@ def print_rule(premise, conclusion, support, confidence, features):
 
 
 # In[10]:
-
-
+# 测试Int[9]的方法
 premise = 1
 conclusion = 3
 print_rule(premise, conclusion, support, confidence, features)
@@ -188,26 +163,25 @@ print_rule(premise, conclusion, support, confidence, features)
 
 # In[11]:
 
-
 # Sort by support
 from pprint import pprint
-pprint(list(support.items()))
+pprint(list(support.items())) # Python 字典 items() 方法以列表返回可遍历的(键, 值) 元组数组。pprint使得打印结果更加美观
 
 
 # In[12]:
 
-
 from operator import itemgetter
-sorted_support = sorted(support.items(), key=itemgetter(1), reverse=True)
+sorted_support = sorted(support.items(), key=itemgetter(1), reverse=True) # itermgetter(1)表示支持度的字典的值而不是键，reverse=Ture表示逆序
 
 
 # In[13]:
 
-
 for index in range(5):
     print("Rule #{0}".format(index + 1))
-    (premise, conclusion) = sorted_support[index][0]
-    print_rule(premise, conclusion, support, confidence, features)
+    (premise, conclusion) = sorted_support[index][0] # sorted_support 为（((1,2),3), 这种类型，sorted_support[index][0]为键元组
+                                                                          ((2,3),4),
+                                                                          ((3,4),6))
+    print_rule(premise, conclusion, support, confidence, features) # 根据支持度从高到底排序后打印规则
 
 
 # In[14]:
@@ -218,10 +192,8 @@ sorted_confidence = sorted(confidence.items(), key=itemgetter(1), reverse=True)
 
 # In[15]:
 
-
 for index in range(5):
     print("Rule #{0}".format(index + 1))
     (premise, conclusion) = sorted_confidence[index][0]
-    print_rule(premise, conclusion, support, confidence, features)
-
+    print_rule(premise, conclusion, support, confidence, features)  # 根据置信度从高到底排序后打印规则
 ```
