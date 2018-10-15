@@ -197,3 +197,5 @@ for index in range(5):
     (premise, conclusion) = sorted_confidence[index][0]
     print_rule(premise, conclusion, support, confidence, features)  # 根据置信度从高到底排序后打印规则
 ```
+## 根据iris数据集简单分类
+### 
