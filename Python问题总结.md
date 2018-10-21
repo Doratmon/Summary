@@ -134,7 +134,8 @@ for premise, conclusion in valid_rules.keys(): # valid_rules。keys()为所有�
 
 # In[8]:
 
-for premise, conclusion in confidence: # confidenc时键为元组，值为float 所以键有两个元素值 premise与conclusion分别对应到了这两个值
+# confidenc时键为元组，值为float 所以键有两个元素值 premise与conclusion分别对应到了这两个值
+for premise, conclusion in confidence: 
     premise_name = features[premise] 
     conclusion_name = features[conclusion]
     print("Rule: If a person buys {0} they will also buy {1}".format(premise_name, conclusion_name))
@@ -171,16 +172,17 @@ pprint(list(support.items())) # Python 字典 items() 方法以列表返回可�
 # In[12]:
 
 from operator import itemgetter
-sorted_support = sorted(support.items(), key=itemgetter(1), reverse=True) # itermgetter(1)表示支持度的字典的值而不是键，reverse=Ture表示逆序
-
+# itermgetter(1)表示支持度的字典的值而不是键，reverse=Ture表示逆序
+sorted_support = sorted(support.items(), key=itemgetter(1), reverse=True) 
 
 # In[13]:
 
 for index in range(5):
     print("Rule #{0}".format(index + 1))
-    (premise, conclusion) = sorted_support[index][0] # sorted_support 为（((1,2),3), 这种类型，sorted_support[index][0]为键元组
-                                                                          ((2,3),4),
-                                                                          ((3,4),6))
+    # sorted_support 为（((1,2),3), 这种类型，sorted_support[index][0]为键元组
+                        ((2,3),4),
+                        ((3,4),6))
+    (premise, conclusion) = sorted_support[index][0] 
     print_rule(premise, conclusion, support, confidence, features) # 根据支持度从高到底排序后打印规则
 
 
@@ -219,7 +221,8 @@ for index in range(5):
 import numpy as np
 
 
-# The OneR algorithm is quite simple but can be quite effective, showing the power of using even basic statistics in many applications.
+# The OneR algorithm is quite simple but can be quite effective, 
+# showing the power of using even basic statistics in many applications.
 # The algorithm is:
 # 
 # * For each variable
@@ -236,29 +239,37 @@ from sklearn.datasets import load_iris #从datasets中导入数据集iris
 #X, y = np.loadtxt("X_classification.txt"), np.loadtxt("y_classification.txt")
 dataset = load_iris()
 #print(type(dataset))
-X = dataset.data # iris中的所有数据 类型为ndarray（有点像：每行为一个元素，这个元素为一个列表，总的一个列表，但列表之间无逗号分隔）
+# iris中的所有数据 类型为ndarray（有点像：每行为一个元素，这个元素为一个列表，总的一个列表，但列表之间无逗号分隔）
+X = dataset.data 
 # print(X)
 y = dataset.target # iris的分类标准 0 1 2 存储在一个列表中
 print(y)
 # print(type(X))
 # print(dataset.DESCR)
-# shape表示ndarray中元素的个数（一维时），表示行列数（二维时） n_smaples对应行数-->样本数，n_features对应列数-->样本特征数
+# shape表示ndarray中元素的个数（一维时）表示行列数（二维时）
+# n_smaples对应行数-->样本数，n_features对应列数-->样本特征数
 n_samples, n_features = X.shape 
 print(n_features) # 4
 
 
-# Our attributes are continuous, while we want categorical features to use OneR. We will perform a *preprocessing* step called discretisation（离散化). At this stage, we will perform a simple procedure: compute the mean and determine whether a value is above or below the mean.
+# Our attributes are continuous, while we want categorical features to use OneR.
+# We will perform a *preprocessing* step called discretisation（离散化). 
+# At this stage, we will perform a simple procedure: 
+# compute the mean and determine whether a value is above or below the mean.
 
 # In[3]:
 
 # Compute the mean for each attribute
-attribute_means = X.mean(axis=0) # axis=0时按行压缩求均值，X最后只剩一行，这一行有四列，对应iris的四个属性，attribute_means为ndarray
+# axis=0时按行压缩求均值，X最后只剩一行，这一行有四列，对应iris的四个属性，attribute_means为ndarray
+attribute_means = X.mean(axis=0) 
 # mean()函数用法见附1
 print(attribute_means)
 # assert为断言 用法见附2 shape 用法见附3
-assert attribute_means.shape == (n_features,) # 给attribute_means的shape赋值，因为只有一行四列，所以形式为（n_features,)
+# 给attribute_means的shape赋值，因为只有一行四列，所以形式为（n_features,)
+assert attribute_means.shape == (n_features,) 
 # print(attribute_means.shape) # 为(4,)
-X_d = np.array(X >= attribute_means, dtype='int') # # 与平均值比较,大于等于的为“1”,小于的为“0”.将连续性的特征值变为离散性的类别型。 
+# 与平均值比较,大于等于的为“1”,小于的为“0”.将连续性的特征值变为离散性的类别型。 
+X_d = np.array(X >= attribute_means, dtype='int') 
 print(X_d)
 
 
@@ -266,7 +277,8 @@ print(X_d)
 
 
 # Now, we split into（分成） a training and test set
-# cross_validation模块在0.18版本中被弃用，现在已经被model_selection代替。所以在导入的时候把"sklearn.cross_validation import  train_test_split "更改为
+# cross_validation模块在0.18版本中被弃用，现在已经被model_selection代替。
+# 所以在导入的时候把"sklearn.cross_validation import  train_test_split "更改为
 # "from sklearn.model_selection import  train_test_split"
 from sklearn.model_selection import train_test_split
 
@@ -326,13 +338,14 @@ def train(X, y_true, feature):
     assert 0 <= feature < n_features # 判断特征的索引值是否在特征值范围内
     # Get all of the unique values that this variable has
     # X[:,feature]赋实参后为X_train[:,feature](第feature列X的训练集的特征值)
-    # [:,feature]表示所有行的第feature列（列序号从0开始） set函数为求集合（注意集合三大特性，因为不重复性，所以values只有0和1）
+    # [:,feature]表示所有行的第feature列（列序号从0开始） 
+    # set函数为求集合（注意集合三大特性，因为不重复性，所以values只有0和1）
     values = set(X[:,feature]) 
     # Stores the predictors array that is returned
     predictors = dict() # 创建一个空字典
     errors = []
-    for current_value in values: # 遍历转换为0 1后的特征值列values
-                                                        # X_train,y_train,variable(第几列特征),current_value选定列的当前某一个特定特征值
+    for current_value in values: # 遍历转换为0 1后的特征值列values，values只用0和1
+         # X_train,y_train,variable(第几列特征),current_value选定列的当前某一个特定特征值
         most_frequent_class, error = train_feature_value(X, y_true, feature, current_value)
         predictors[current_value] = most_frequent_class
         errors.append(error)
@@ -349,7 +362,9 @@ def train_feature_value(X, y_true, feature, value):# 参数分别为数据集，
     # Create a simple dictionary to count how frequency they give certain predictions
     class_counts = defaultdict(int) # defaultdict在索引值不存在时 返回对应类型的默认值
     # Iterate through each sample and count the frequency of each class/value pair
-    for sample, y in zip(X, y_true):# zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的对象，在前面加list()即可转换为列表对象
+    # zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，
+    # 然后返回由这些元组组成的对象，在前面加list()即可转换为列表对象
+    for sample, y in zip(X, y_true):
         if sample[feature] == value:
             class_counts[y] += 1
     # Now get the best one by sorting (highest first) and choosing the first item
@@ -380,7 +395,8 @@ print("The best model is based on variable {0} and has error {1:.2f}".format(bes
 model = {'variable': best_variable,
          'predictor': all_predictors[best_variable][0]}
 print(model)
-# print(all_predictors)-->{0: ({0: 0, 1: 2}, 41), 1: ({0: 1, 1: 0}, 58), 2: ({0: 0, 1: 2}, 37), 3: ({0: 0, 1: 2}, 37)}
+# print(all_predictors)-->
+# {0: ({0: 0, 1: 2}, 41), 1: ({0: 1, 1: 0}, 58), 2: ({0: 0, 1: 2}, 37), 3: ({0: 0, 1: 2}, 37)}
 # print(errors)-->{0: 41, 1: 58, 2: 37, 3: 37}
 
 
@@ -416,8 +432,8 @@ print(classification_report(y_test, y_predicted))
 
 ```
 ### 附：
-1. numpy中的mean函数：![用法链接](https://blog.csdn.net/lilong117194/article/details/78397329)
-2. assert断言：![用法链接](https://blog.csdn.net/qq_37119902/article/details/79637578)
-3. shape：![用法链接](https://blog.csdn.net/by_study/article/details/67633593)
-4. train_test_split参数含义：![用法链接](https://www.e-learn.cn/content/qita/780160)
-5. classification_report参数含义：![用法链接](https://blog.csdn.net/genghaihua/article/details/81155200)
+1. numpy中的mean函数：*[用法链接](https://blog.csdn.net/lilong117194/article/details/78397329)
+2. assert断言：*[用法链接](https://blog.csdn.net/qq_37119902/article/details/79637578)
+3. shape：*[用法链接](https://blog.csdn.net/by_study/article/details/67633593)
+4. train_test_split参数含义：*[用法链接](https://www.e-learn.cn/content/qita/780160)
+5. classification_report参数含义：*[用法链接](https://blog.csdn.net/genghaihua/article/details/81155200)
