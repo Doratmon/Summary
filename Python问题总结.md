@@ -279,6 +279,7 @@ random_state = 14
 
 # 训练集Xd_train和测试集Xd_test。
 #y_train和y_test分别为以上两个数据集的类别信息
+# train_test_split()函数用法见 附4
 X_train, X_test, y_train, y_test = train_test_split(X_d, y, random_state=random_state)
 print("There are {} training samples".format(y_train))
 print("There are {} training samples".format(y_train.shape))
@@ -288,7 +289,7 @@ print(X_train)
 print(y_train)
 
 
-# In[11]:
+# In[5]:
 
 
 from collections import defaultdict
@@ -325,7 +326,8 @@ def train(X, y_true, feature):
     assert 0 <= feature < n_features # 判断特征的索引值是否在特征值范围内
     # Get all of the unique values that this variable has
     # X[:,feature]赋实参后为X_train[:,feature](第feature列X的训练集的特征值)
-    values = set(X[:,feature]) # [:,feature]表示所有行的第feature列（列序号从0开始） set函数为求集合（注意集合三大特性）
+    # [:,feature]表示所有行的第feature列（列序号从0开始） set函数为求集合（注意集合三大特性，因为不重复性，所以values只有0和1）
+    values = set(X[:,feature]) 
     # Stores the predictors array that is returned
     predictors = dict() # 创建一个空字典
     errors = []
@@ -340,7 +342,8 @@ def train(X, y_true, feature):
 
 # Compute what our predictors say each sample is based on its value
 #y_predicted = np.array([predictors[sample[feature]] for sample in X])
-    
+  
+# train_feature_value函数为计算每一列特征值（0和1）分别对应类别最准确的一个
                         # X_train,y_train,variable(第几列特征),current_value选定列的当前某一个特定特征值
 def train_feature_value(X, y_true, feature, value):# 参数分别为数据集，类别数组，选好的特征索引值，特征值
     # Create a simple dictionary to count how frequency they give certain predictions
@@ -361,11 +364,11 @@ def train_feature_value(X, y_true, feature, value):# 参数分别为数据集，
     return most_frequent_class, error
 
 
-# In[19]:
+# In[6]:
 
 
 # Compute all of the predictors
-# variable表示特征值序号（即X的列数 0到3）
+# variable表示特征值序号（即X的列数 0到3）X_train.shape具有行和列 是二维 shape[1]表示列-->即为属性个数
 all_predictors = {variable: train(X_train, y_train, variable) for variable in range(X_train.shape[1])}
 errors = {variable: error for variable, (mapping, error) in all_predictors.items()}
 # Now choose the best and save that as "model"
@@ -377,47 +380,44 @@ print("The best model is based on variable {0} and has error {1:.2f}".format(bes
 model = {'variable': best_variable,
          'predictor': all_predictors[best_variable][0]}
 print(model)
+# print(all_predictors)-->{0: ({0: 0, 1: 2}, 41), 1: ({0: 1, 1: 0}, 58), 2: ({0: 0, 1: 2}, 37), 3: ({0: 0, 1: 2}, 37)}
+# print(errors)-->{0: 41, 1: 58, 2: 37, 3: 37}
 
 
-# In[20]:
-
+# In[7]:
 
 def predict(X_test, model):
     variable = model['variable']
     predictor = model['predictor']
+    # 检测X_test每一个sample的第variable列为什么特征值
     y_predicted = np.array([predictor[int(sample[variable])] for sample in X_test])
     return y_predicted
 
-
-# In[21]:
-
+# In[8]:
 
 y_predicted = predict(X_test, model)
 print(y_predicted)
 
 
-# In[22]:
-
+# In[9]:
 
 # Compute the accuracy by taking the mean of the amounts that y_predicted is equal to y_test
 accuracy = np.mean(y_predicted == y_test) * 100
 print("The test accuracy is {:.1f}%".format(accuracy))
 
-
-# In[23]:
-
+# In[10]:
 
 from sklearn.metrics import classification_report
 
 
-# In[24]:
-
+# In[11]:
 
 print(classification_report(y_test, y_predicted))
-
 
 ```
 ### 附：
 1. numpy中的mean函数：![用法链接](https://blog.csdn.net/lilong117194/article/details/78397329)
 2. assert断言：![用法链接](https://blog.csdn.net/qq_37119902/article/details/79637578)
-3. shape: ![用法链接](https://blog.csdn.net/by_study/article/details/67633593)
+3. shape：![用法链接](https://blog.csdn.net/by_study/article/details/67633593)
+4. train_test_split参数含义：![用法链接](https://www.e-learn.cn/content/qita/780160)
+5. classification_report参数含义：![用法链接](https://blog.csdn.net/genghaihua/article/details/81155200)
