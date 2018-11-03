@@ -93,3 +93,36 @@ int main ()
 ### 输出
 dest = http://www.runoob.com
 ---
+## memset函数
+### 描述
+C 库函数 void \*memset(void \*str, int c, size_t n) 复制字符 c（一个无符号字符）到参数 str 所指向的字符串的前 n 个字符。
+### 声明
+void \*memset(void \*str,int c,size_t n)
+### 参数
+* str --要填充内存块的起始地址
+* c--使用的字符，该值在填充内存块时使用的是它的无符号字符形式
+* n--要被设置为该值的字节数
+### 返回值
+返回一个指向存储区str的指针
+### 实例
+```C
+#include <stdio.h>
+#include <string.h>
+
+int main ()
+{
+   char str[50];
+
+   strcpy(str,"This is string.h library function");
+   puts(str);
+
+   memset(str,'$',7);
+   puts(str);
+   
+   return(0);
+}
+```
+### 结果
+* This is string.h library function
+* $$$$$$$ string.h library function
+---------------
