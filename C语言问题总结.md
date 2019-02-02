@@ -71,9 +71,9 @@ char*str=(char*)malloc(sizeof(char)*13);
 * 内存划分
 
   * int  \*p1[10]
-    * ![指针数组](E:\Github\Summary\images\指针数组.PNG)
+    * ![指针数组](./images/指针数组.PNG)
   * int (*p2)[10]
-    * ![数组指针](E:\Github\Summary\images\数组指针.PNG)
+    * ![数组指针](./images/数组指针.PNG)
 
 * int (*)[10] p2------也许应该这么定义数组指针
 
