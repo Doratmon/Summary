@@ -213,7 +213,7 @@ char*str=(char*)malloc(sizeof(char)*13);
 
   * IEEE 754规定，对于32位浮点数，最高的1位是符号位s，接着8位是指数E，剩下的23位为有效数字M
 
-    ![float存储图](./images/float内存存储.png)
+    ![float内存存储](./images/float内存存储.PNG)
 
   * [float参考链接](https://www.cnblogs.com/SimpleISP/p/5280362.html)
 
