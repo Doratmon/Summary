@@ -217,7 +217,7 @@ char*str=(char*)malloc(sizeof(char)*13);
 
   * [float参考链接](https://www.cnblogs.com/SimpleISP/p/5280362.html)
 
-* float范围：-2^128~2^128 double范围：-2^1024~2^1024
+* float范围：-2^128~2^128   double范围：-2^1024~2^1024
 
 * [存储范围参考链接](https://blog.csdn.net/mydriverc2/article/details/84306046)
 
