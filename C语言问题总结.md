@@ -231,6 +231,8 @@ char*str=(char*)malloc(sizeof(char)*13);
 * 输入输出长整型long用%ld
 * [参考链接1](https://blog.csdn.net/danxibaoxxx/article/details/81236180)
 * [参考链接2](https://blog.csdn.net/qq_32365567/article/details/55045942)
+* C语言除0问题
+  * [链接](<https://www.jb51.net/article/40566.htm>)
 
 ## 2. 函数
 
